@@ -32,13 +32,13 @@ Usage: `php pcxmcutils load:mgr {simid?} {dfrid?} {mgrfile?}`
 `dfrfile` is the path and name of the simulation definition file to load.  If not provided, the script will as the user.
 
 ### load:simFiles
-Loads PCXMCRotation simulation definition and result files stored in a directory into the database.
+Loads PCXMCRotation simulation definition and result files stored in a directory into the database.  This command looks for the simulation files within the `storage` folder.
 
 Usage: `php pcxmcutils load:simFiles {simid?} {dir?}`
 
 `simid` is the simulation ID to associate the definition file with.  If not provided, the script will ask the user.
 
-`dir` is the directory where the PCXMCRotation simulation definition and result files are stored.
+`dir` is the directory under the `storage` folder where the PCXMCRotation simulation definition and result files are located.
 
 ## License
 
