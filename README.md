@@ -17,6 +17,7 @@ Loads a PCXMCRotationn definition file and stores the contents in the database.
 Usage: `php pcxmcutils load:dfr {simid?} {dfrfile?}`
 
 `simid` is the simulation ID to associate the definition file with.  If not provided, the script will ask the user.
+
 `dfrfile` is the path and name of the simulation definition file to load.  If not provided, the script will as the user.
 
 ### load:mgr
@@ -25,7 +26,9 @@ Loads a PCXMCRotation simulation result file and stores the contents in the data
 Usage: `php pcxmcutils load:mgr {simid?} {dfrid?} {mgrfile?}`
 
 `simid` is the simulation ID to associate the definition file with.  If not provided, the script will ask the user.
+
 `dfrid` is the ID of the PCXMCRotation simulation definition file that was used to generate the result file.  If not provided, the script will ask the user.
+
 `dfrfile` is the path and name of the simulation definition file to load.  If not provided, the script will as the user.
 
 ### load:simFiles
@@ -34,6 +37,7 @@ Loads PCXMCRotation simulation definition and result files stored in a directory
 Usage: `php pcxmcutils load:simFiles {simid?} {dir?}`
 
 `simid` is the simulation ID to associate the definition file with.  If not provided, the script will ask the user.
+
 `dir` is the directory where the PCXMCRotation simulation definition and result files are stored.
 
 ## License
