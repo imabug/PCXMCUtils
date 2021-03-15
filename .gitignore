@@ -21,6 +21,7 @@ public_html/.htaccess
 /.vscode
 /.vagrant
 .phpunit.result.cache
+.ac-php-conf.json
 /database/database.sqlite
 docker-compose.override.yml
 
