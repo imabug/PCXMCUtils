@@ -92,11 +92,11 @@ class LoadSimFiles extends Command
 
         // Go through each file and process the corresponding dfR and mGR file
         foreach ($dfrCollection as $f) {
-            $dfrid = $this->loadDfr($simid, $f);
+            $dfrid = $this->loadDfr($simSet->id, $f);
             // $this->info('dfR file stored as '.$dfrid);
 
             // Replace the .dfR extension with .mGR and load the mGR file
-            $mgrid = $this->loadMgr($simid, $dfrid, substr($f, 0, -3).$this->mgrExt);
+            $mgrid = $this->loadMgr($simSet->id, $dfrid, substr($f, 0, -3).$this->mgrExt);
             // $this->info('mGR file stored as '.$mgrid);
 
             $progressBar->advance();
