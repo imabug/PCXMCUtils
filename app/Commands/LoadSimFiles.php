@@ -70,24 +70,23 @@ class LoadSimFiles extends Command
             $directory = $arguments['dir'];
         }
 
-        // Get a collection of all the file entries in the directory
-        $dirCollection = collect(Storage::files($directory));
-
         // Get all the .dfR files
-        $dfrCollection = $dirCollection->
+        $dfrCollection = collect(Storage::files($directory))->
             filter(function ($value) {
                 if (File::extension($value) == $this->dfrExt) {
                     return $value;
                 }
             });
 
+        $n = $dfrCollection->count();
+
         // No dfR files found.  Nothing to do so exit here.
-        if ($dfrCollection->count() == 0) {
+        if ($n == 0) {
             $this->error('There are no PCXMCRotation simulation definition files available.');
             return 0;
         }
 
-        $progressBar = $this->output->createProgressBar($dfrCollection->count());
+        $progressBar = $this->output->createProgressBar($n);
         $progressBar->start();
 
         // Go through each file and process the corresponding dfR and mGR file
