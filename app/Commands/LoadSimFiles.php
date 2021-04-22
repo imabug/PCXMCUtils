@@ -95,7 +95,7 @@ class LoadSimFiles extends Command
 
             // Replace the .dfR extension with .mGR and load the mGR file
             $mgrFile = substr($f, 0, -3).$this->mgrExt;
-            if (File::exists($mgrFile)) {
+            if (Storage::exists($mgrFile)) {
                 $mgrid = $this->loadMgr($simSet->id, $dfrid, $mgrFile);
             }
 
