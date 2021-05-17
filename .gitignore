@@ -4,7 +4,7 @@ npm-debug.log
 yarn-error.log
 
 /storage/*.key
-.env
+.env*
 .env.backup
 Homestead.yaml
 Homestead.json
