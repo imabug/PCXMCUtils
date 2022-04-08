@@ -46,8 +46,8 @@ class Autorun extends Command
         $yRange[15] = [-6, 6];
         $yRange[30] = [-6, 6];
         $zRange[10] = [56, 64];
-        $zRange[15] = [69, 80];
-        $zRange[30] = [76, 88];
+        $zRange[15] = [71, 80];
+        $zRange[30] = [79, 88];
 
         // Scaling factor to calculate X-ray beam height and width at FRD
         // Scaling factor = FRD/FID
