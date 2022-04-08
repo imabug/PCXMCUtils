@@ -39,12 +39,12 @@ class Autorun extends Command
 #            [30, 178.6, 73.2, 83],
         ];
 
-        $xRange[10] = [-7, 7];
-        $xRange[15] = [-7, 7];
-        $xRange[30] = [-8, 8];
-        $yRange[10] = [-9, 5];
-        $yRange[15] = [-9, 6];
-        $yRange[30] = [-9, 6];
+        $xRange[10] = [-6, 6];
+        $xRange[15] = [-6, 6];
+        $xRange[30] = [-6, 6];
+        $yRange[10] = [-6, 5];
+        $yRange[15] = [-6, 6];
+        $yRange[30] = [-6, 6];
         $zRange[10] = [56, 64];
         $zRange[15] = [69, 80];
         $zRange[30] = [76, 88];
