@@ -53,15 +53,13 @@ class Autorun extends Command
         // Scaling factor = FRD/FID
         //$scale = 40.0 / 60.0;
 
-        $hdrFormat = "%dy kV=%d X=%d Y=%d Z=%d filtA=%d FID=60 IW=%d IH=%d Proj=%d";
-        $fnFormat = "%dy_kV=%d_X=%d_Y=%d_Z=%d__filtA=%d_FID=60_IW=%d_IH=%d_Proj=%d";
+        $hdrFormat = "%dy kV=%d X=%d Y=%d Z=%d filtA=%d FID=60 W=%d H=%d Proj=%d";
+        $fnFormat = "%dy_kV=%d_X=%d_Y=%d_Z=%d__filtA=%d_FID=60_W=%d_H=%d_Proj=%d";
 
         foreach ($phantParam as list($age, $length, $mass, $zRef)) {
             for ($kv = 60; $kv <= 120; $kv += 20) {
-                for ($height = 1; $height <= 24; $height += 2) {
-                    $xRHeight = $height * $scale;
-                    for ($width = 1; $width <= 24; $width += 2) {
-                        $xRWidth = $width * $scale;
+                for ($height = 1; $height <= 16; $height += 2) {
+                    for ($width = 1; $width <= 16; $width += 2) {
                         for ($filtA = 2; $filtA <= 6; $filtA++ ) {
                             for ($xRef = $xRange[$age][0]; $xRef <= $xRange[$age][1]; $xRef++) {
                                 for ($yRef = $yRange[$age][0]; $yRef <= $yRange[$age][1]; $yRef++) {
@@ -79,8 +77,8 @@ class Autorun extends Command
                              Mass: {$mass}
                   Arms in phantom:                             1
                               FRD:                       40.0000
-                 X-ray beam width: {$xRWidth}
-                X-ray beam height: {$xRHeight}
+                 X-ray beam width: {$width}
+                X-ray beam height: {$height}
                               FSD:                       37.2000
                Beam width at skin:                       14.8800
               Beam height at skin:                        3.0969
