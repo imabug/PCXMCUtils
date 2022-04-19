@@ -39,42 +39,54 @@ class Autorun extends Command
 #            [30, 178.6, 73.2, 83],
         ];
 
+        $xRange[10] = [-6, 6];
+        $xRange[15] = [-6, 6];
+        $xRange[30] = [-6, 6];
+        $yRange[10] = [-6, 5];
+        $yRange[15] = [-6, 6];
+        $yRange[30] = [-6, 6];
+        $zRange[10] = [56, 64];
+        $zRange[15] = [71, 80];
+        $zRange[30] = [79, 88];
+
         // Scaling factor to calculate X-ray beam height and width at FRD
         // Scaling factor = FRD/FID
-        $scale = 40.0 / 60.0;
+        //$scale = 40.0 / 60.0;
 
-        $hdrFormat = "%dy kV=%d X=0 Y=0 Z=%d filtA=%d FID=60 IW=%d IH=%d";
-        $fnFormat = "%dy_kV=%d_X=0_Y=0_Z=%d__filtA=%d_FID=60_IW=%d_IH=%d";
+        $hdrFormat = "%dy kV=%d X=%d Y=%d Z=%d filtA=%d FID=60 W=%d H=%d Proj=%d";
+        $fnFormat = "%dy_kV=%d_X=%d_Y=%d_Z=%d__filtA=%d_FID=60_W=%d_H=%d_Proj=%d";
 
         foreach ($phantParam as list($age, $length, $mass, $zRef)) {
             for ($kv = 60; $kv <= 120; $kv += 20) {
-                for ($height = 1; $height <= 24; $height += 2) {
-                    $xRHeight = $height * $scale;
-                    for ($width = 1; $width <= 24; $width += 2) {
-                    $xRWidth = $width * $scale;
-                    for ($filtA = 2; $filtA <= 6; $filtA++ ) {
-                        $startTime = microtime(true);
-                        $header = sprintf($hdrFormat, $age, $kv, $zRef, $filtA, $width, $height);
-                        $filename = sprintf($fnFormat, $age, $kv, $zRef, $filtA, $width, $height);
-                    $content = <<<EOD
+                for ($height = 1; $height <= 16; $height += 2) {
+                    for ($width = 1; $width <= 16; $width += 2) {
+                        for ($filtA = 2; $filtA <= 6; $filtA++ ) {
+                            for ($xRef = $xRange[$age][0]; $xRef <= $xRange[$age][1]; $xRef++) {
+                                for ($yRef = $yRange[$age][0]; $yRef <= $yRange[$age][1]; $yRef++) {
+                                    for ($zRef = $zRange[$age][0]; $zRef <= $zRange[$age][1]; $zRef++) {
+                                        for ($angle = 0; $angle < 360; $angle++) {
+                                            $startTime = microtime(true);
+                                            $header = sprintf($hdrFormat, $age, $kv, $xRef, $yRef, $zRef, $filtA, $width, $height, $angle);
+                                            $filename = sprintf($fnFormat, $age, $kv, $xRef, $yRef, $zRef, $filtA, $width, $height, $angle);
+                                            $content = <<<EOD
                       Header text: {$header}
-                       Projection:                        0.0000
+                       Projection: {$angle}
                        Obl. Angle:                        0.0000
                               Age: {$age}
                            Length: {$length}
                              Mass: {$mass}
                   Arms in phantom:                             1
                               FRD:                       40.0000
-                 X-ray beam width: {$xRWidth}
-                X-ray beam height: {$xRHeight}
+                 X-ray beam width: {$width}
+                X-ray beam height: {$height}
                               FSD:                       37.2000
                Beam width at skin:                       14.8800
               Beam height at skin:                        3.0969
-                             Xref:                        0.0000
-                             Yref:                        0.0000
+                             Xref: {$xRef}
+                             Yref: {$yRef}
                              Zref: {$zRef}
             E-levels (Max.en./10):                            15
-                           NPhots:                       1000000
+                           NPhots:                         20000
                                kV: {$kv}
                        AnodeAngle:                             5
                      Filter A (Z):                            13
@@ -86,13 +98,17 @@ class Autorun extends Command
                  Output file name: {$filename}
   EOD;
 
-                    $fh = fopen("/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/Autocalc.dfR", 'w+');
-                    fwrite($fh, $content);
-                    fclose($fh);
-                    exec("/usr/bin/wine /home/eugenem/.wine/drive_c/Program\ Files\ \(x86\)/PCXMC/PCXMC20Rotation.exe");
-                    $endTime = microtime(true);
-                    $this->info(round(($endTime - $startTime)/60, 4));
-                    }
+                                            $fh = fopen("/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/Autocalc.dfR", 'w+');
+                                            fwrite($fh, $content);
+                                            fclose($fh);
+                                            exec("/usr/bin/wine /home/eugenem/.wine/drive_c/Program\ Files\ \(x86\)/PCXMC/PCXMC20Rotation.exe");
+                                            $endTime = microtime(true);
+                                            $this->info(round(($endTime - $startTime)/60, 4));
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
