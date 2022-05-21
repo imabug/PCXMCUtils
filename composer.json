@@ -1,18 +1,22 @@
 {
     "name": "imabug/pcxmcutils",
     "description": "PCXMC Utilities",
-    "keywords": ["framework", "laravel", "laravel zero", "console", "cli", "PCXMC"],
-    "homepage": "https://v16.imablog.net/",
+    "keywords": ["laravel zero", "console", "cli", "PCXMC"],
+    "homepage": "https://github.com/imabug/PCXMCUtils",
     "type": "project",
-    "license": "MIT",
+    "license": "GPL-3.0-or-later",
     "support": {
+        "email": "eugenemah@gmail.com",
         "issues": "https://github.com/imabug/PCXMCUtils/issues",
-        "source": "https://github.com/imabug/PCXMCUtils"
+        "source": "https://github.com/imabug/PCXMCUtils",
+        "wiki": "https://github.com/imabug/PCXMCUtils/wiki",
+        "forum": "https://github.com/imabug/PCXMCUtils/discussions"
     },
     "authors": [
         {
             "name": "Eugene Mah",
-            "email": "eugenemah@gmail.com"
+            "email": "eugenemah@gmail.com",
+            "homepage": "https://v16.imablog.net/"
         }
     ],
     "require": {
