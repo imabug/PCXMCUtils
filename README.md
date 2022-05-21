@@ -42,4 +42,4 @@ Usage: `php pcxmcutils load:simFiles {simid?} {dir?}`
 
 ## License
 
-PCXMCUtils is licensed under the MIT license.
+PCXMCUtils is licensed under the GPL 3.0 license.
