@@ -121,7 +121,7 @@ class LoadSimFiles extends Command
         // Use explode() to split each line into an array element
         $dfrData = explode("\n", Storage::get($f));
 
-        $dfr = new Dfr;
+        $dfr = new Dfr();
 
         // Parse the dfR data
         $dfr->simulation_id  = $simid;
@@ -173,9 +173,11 @@ class LoadSimFiles extends Command
         // Storage::get() returns the file contents as a string.
         // Use explode() to split each line into an array element
         $mgrData = array_slice(
-            explode("\r\n", Storage::get($f)), 18);
+            explode("\r\n", Storage::get($f)),
+            18
+        );
 
-        $mgr = new Mgr;
+        $mgr = new Mgr();
 
         // Store the last 5 lines of the first section of the mGR file
         $mgr->simulation_id = $simid;

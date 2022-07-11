@@ -56,11 +56,11 @@ class Autorun extends Command
         $hdrFormat = "%dy kV=%d X=%d Y=%d Z=%d filtA=%d FID=60 W=%d H=%d Proj=%d";
         $fnFormat = "%dy_kV=%d_X=%d_Y=%d_Z=%d__filtA=%d_FID=60_W=%d_H=%d_Proj=%d";
 
-        foreach ($phantParam as list($age, $length, $mass, $zRef)) {
+        foreach ($phantParam as [$age, $length, $mass, $zRef]) {
             for ($kv = 60; $kv <= 120; $kv += 20) {
                 for ($height = 1; $height <= 16; $height += 2) {
                     for ($width = 1; $width <= 16; $width += 2) {
-                        for ($filtA = 2; $filtA <= 6; $filtA++ ) {
+                        for ($filtA = 2; $filtA <= 6; $filtA++) {
                             for ($xRef = $xRange[$age][0]; $xRef <= $xRange[$age][1]; $xRef++) {
                                 for ($yRef = $yRange[$age][0]; $yRef <= $yRange[$age][1]; $yRef++) {
                                     for ($zRef = $zRange[$age][0]; $zRef <= $zRange[$age][1]; $zRef++) {
@@ -69,34 +69,34 @@ class Autorun extends Command
                                             $header = sprintf($hdrFormat, $age, $kv, $xRef, $yRef, $zRef, $filtA, $width, $height, $angle);
                                             $filename = sprintf($fnFormat, $age, $kv, $xRef, $yRef, $zRef, $filtA, $width, $height, $angle);
                                             $content = <<<EOD
-                      Header text: {$header}
-                       Projection: {$angle}
-                       Obl. Angle:                        0.0000
-                              Age: {$age}
-                           Length: {$length}
-                             Mass: {$mass}
-                  Arms in phantom:                             1
-                              FRD:                       40.0000
-                 X-ray beam width: {$width}
-                X-ray beam height: {$height}
-                              FSD:                       37.2000
-               Beam width at skin:                       14.8800
-              Beam height at skin:                        3.0969
-                             Xref: {$xRef}
-                             Yref: {$yRef}
-                             Zref: {$zRef}
-            E-levels (Max.en./10):                            15
-                           NPhots:                         20000
-                               kV: {$kv}
-                       AnodeAngle:                             5
-                     Filter A (Z):                            13
-                    Filter A (mm): {$filtA}
-                     Filter B (Z):                            29
-                    Filter B (mm):                             0
-              Input dose quantity:                           DAP
-                 Input dose value:                           1.0
-                 Output file name: {$filename}
-  EOD;
+                                                                    Header text: {$header}
+                                                                     Projection: {$angle}
+                                                                     Obl. Angle:                        0.0000
+                                                                            Age: {$age}
+                                                                         Length: {$length}
+                                                                           Mass: {$mass}
+                                                                Arms in phantom:                             1
+                                                                            FRD:                       40.0000
+                                                               X-ray beam width: {$width}
+                                                              X-ray beam height: {$height}
+                                                                            FSD:                       37.2000
+                                                             Beam width at skin:                       14.8800
+                                                            Beam height at skin:                        3.0969
+                                                                           Xref: {$xRef}
+                                                                           Yref: {$yRef}
+                                                                           Zref: {$zRef}
+                                                          E-levels (Max.en./10):                            15
+                                                                         NPhots:                         20000
+                                                                             kV: {$kv}
+                                                                     AnodeAngle:                             5
+                                                                   Filter A (Z):                            13
+                                                                  Filter A (mm): {$filtA}
+                                                                   Filter B (Z):                            29
+                                                                  Filter B (mm):                             0
+                                                            Input dose quantity:                           DAP
+                                                               Input dose value:                           1.0
+                                                               Output file name: {$filename}
+                                                EOD;
 
                                             $fh = fopen("/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/Autocalc.dfR", 'w+');
                                             fwrite($fh, $content);

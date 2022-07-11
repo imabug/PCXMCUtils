@@ -92,7 +92,7 @@ class LoadMgr extends Command
     {
         $mgrData = array_slice(file($mgrFile.$this->mgrExt, FILE_SKIP_EMPTY_LINES), 18);
 
-        $mgr = new Mgr;
+        $mgr = new Mgr();
         // Store the last 5 lines of the first section of the mGR file
         $mgr->simulation_id = $simid;
         $mgr->dfr_id        = $dfrid;

@@ -67,7 +67,7 @@ class LoadDfr extends Command
             return 0;
         }
 
-        $dfrID = $this->loadDfr($simSet->id,$dfrFile);
+        $dfrID = $this->loadDfr($simSet->id, $dfrFile);
         $this->info('dfR file stored as '.$dfrID);
         // If the corresponding .mGR file exists, load it into the database
         if (is_file($dfrFile.$this->mgrExt)) {
@@ -93,7 +93,7 @@ class LoadDfr extends Command
     {
         $dfrData = file($dfrFile.$this->dfrExt);
 
-        $dfr = new Dfr;
+        $dfr = new Dfr();
 
         $dfr->simulation_id  = $simID;
         $dfr->header         = trim(substr($dfrData[0], 33, 100));

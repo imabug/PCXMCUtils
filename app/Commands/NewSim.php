@@ -29,7 +29,7 @@ class NewSim extends Command
      */
     public function handle()
     {
-        $simSet = new Simulation;
+        $simSet = new Simulation();
 
         $simSet->simDate = $this->ask('Simulation date (YYYY-MM-DD)');
         $simSet->simNotes = $this->ask('Simulation notes');
