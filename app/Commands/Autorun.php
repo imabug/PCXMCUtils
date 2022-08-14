@@ -103,7 +103,7 @@ class Autorun extends Command
                                             fclose($fh);
                                             exec("/usr/bin/wine /home/eugenem/.wine/drive_c/Program\ Files\ \(x86\)/PCXMC/PCXMC20Rotation.exe");
                                             $endTime = microtime(true);
-                                            $this->info(round(($endTime - $startTime)/60, 4));
+                                            $this->info(round(($endTime - $startTime)/60, 4).' - '.$filename);
                                         }
                                     }
                                 }
