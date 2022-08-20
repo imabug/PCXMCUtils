@@ -77,8 +77,8 @@ class Autorun extends Command
                                              * the current iteration of the loop.
                                              * If it doesn't exist, do the simulation.
                                              */
+                                            $startTime = microtime(true);
                                             if (file_exists('~/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/'.$filename.'dfR')) {
-                                                $startTime = microtime(true);
                                                 $content = <<<EOD
                                                                     Header text: {$header}
                                                                      Projection: {$angle}
@@ -113,11 +113,11 @@ class Autorun extends Command
                                                 fwrite($fh, $content);
                                                 fclose($fh);
                                                 exec("/usr/bin/wine /home/eugenem/.wine/drive_c/Program\ Files\ \(x86\)/PCXMC/PCXMC20Rotation.exe");
-                                                $endTime = microtime(true);
-                                                $this->info(round(($endTime - $startTime)/60, 4).' - '.$filename);
                                             } else {
                                                 continue;
                                             }
+                                            $endTime = microtime(true);
+                                            $this->info(round(($endTime - $startTime)/60, 4).' - '.$filename);
                                         }
                                     }
                                 }
