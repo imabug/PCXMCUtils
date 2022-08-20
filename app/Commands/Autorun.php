@@ -65,10 +65,21 @@ class Autorun extends Command
                                 for ($yRef = $yRange[$age][0]; $yRef <= $yRange[$age][1]; $yRef++) {
                                     for ($zRef = $zRange[$age][0]; $zRef <= $zRange[$age][1]; $zRef++) {
                                         for ($angle = 0; $angle < 360; $angle++) {
-                                            $startTime = microtime(true);
                                             $header = sprintf($hdrFormat, $age, $kv, $xRef, $yRef, $zRef, $filtA, $width, $height, $angle);
                                             $filename = sprintf($fnFormat, $age, $kv, $xRef, $yRef, $zRef, $filtA, $width, $height, $angle);
-                                            $content = <<<EOD
+                                            /*
+                                             * When the simulations get interrupted for whatever reason,
+                                             * (invalid parameters, crash, etc), it would be nice to
+                                             * be able to restart where we left off.
+                                             *
+                                             * Only way I can think of to do that right now is to
+                                             * check if $filename.dfR file exists.  If it does we can skip
+                                             * the current iteration of the loop.
+                                             * If it doesn't exist, do the simulation.
+                                             */
+                                            if (file_exists('~/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/'.$filename.'dfR')) {
+                                                $startTime = microtime(true);
+                                                $content = <<<EOD
                                                                     Header text: {$header}
                                                                      Projection: {$angle}
                                                                      Obl. Angle:                        0.0000
@@ -98,12 +109,15 @@ class Autorun extends Command
                                                                Output file name: {$filename}
                                                 EOD;
 
-                                            $fh = fopen("/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/Autocalc.dfR", 'w+');
-                                            fwrite($fh, $content);
-                                            fclose($fh);
-                                            exec("/usr/bin/wine /home/eugenem/.wine/drive_c/Program\ Files\ \(x86\)/PCXMC/PCXMC20Rotation.exe");
-                                            $endTime = microtime(true);
-                                            $this->info(round(($endTime - $startTime)/60, 4).' - '.$filename);
+                                                $fh = fopen("/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/Autocalc.dfR", 'w+');
+                                                fwrite($fh, $content);
+                                                fclose($fh);
+                                                exec("/usr/bin/wine /home/eugenem/.wine/drive_c/Program\ Files\ \(x86\)/PCXMC/PCXMC20Rotation.exe");
+                                                $endTime = microtime(true);
+                                                $this->info(round(($endTime - $startTime)/60, 4).' - '.$filename);
+                                            } else {
+                                                continue;
+                                            }
                                         }
                                     }
                                 }
