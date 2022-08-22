@@ -71,7 +71,7 @@ class LoadSimFiles extends Command
         }
 
         // Get all the .dfR files
-        $dfrCollection = collect(Storage::files($directory))->
+        $dfrCollection = collect(Storage::disk('simulations')->files($directory))->
             filter(function ($value) {
                 if (File::extension($value) == $this->dfrExt) {
                     return $value;
@@ -119,7 +119,7 @@ class LoadSimFiles extends Command
         // Load the dfR file
         // Storage::get() returns the file contents as a string.
         // Use explode() to split each line into an array element
-        $dfrData = explode("\n", Storage::get($f));
+        $dfrData = explode("\n", Storage::disk('simulations')->get($f));
 
         $dfr = new Dfr();
 
@@ -173,7 +173,7 @@ class LoadSimFiles extends Command
         // Storage::get() returns the file contents as a string.
         // Use explode() to split each line into an array element
         $mgrData = array_slice(
-            explode("\r\n", Storage::get($f)),
+            explode("\r\n", Storage::disk('simulations')->get($f)),
             18
         );
 
