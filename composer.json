@@ -22,6 +22,7 @@
     "require": {
         "php": "^8.0",
         "doctrine/dbal": "^3.4",
+        "illuminate/database": "^9.0",
         "intonate/tinker-zero": "^1.2",
         "laravel-zero/framework": "^9.1.2",
         "nunomaduro/laravel-console-menu": "^3.3",
@@ -29,6 +30,7 @@
         "nunomaduro/termwind": "^1.14"
     },
     "require-dev": {
+        "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.5",
         "pestphp/pest": "^1.21.3"
     },
