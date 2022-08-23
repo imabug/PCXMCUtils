@@ -26,7 +26,7 @@ class LoadSimFiles extends Command
      *
      * @var string
      */
-    protected $description = 'Load PCXMCRotation simulation files in a directory and store them in the database.';
+    protected $description = 'Load PCXMCRotation simulation files in the storage/simulations directory and store them in the database.';
 
     /**
      * dfR file extension.
