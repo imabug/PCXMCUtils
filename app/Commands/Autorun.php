@@ -78,8 +78,8 @@ class Autorun extends Command
                                              * If it doesn't exist, do the simulation.
                                              */
                                             $startTime = microtime(true);
-                                            if (file_exists('/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/'.$filename.'dfR')) {
-                                                $this->info('Skipping /home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/'.$filename.'dfR');
+                                            if (file_exists('/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/'.$filename.'.dfR')) {
+                                                $this->info('Skipping /home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/'.$filename.'.dfR');
                                                 continue;
                                             } else {
                                                 $content = <<<EOD
