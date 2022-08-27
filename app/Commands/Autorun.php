@@ -79,7 +79,7 @@ class Autorun extends Command
                                              */
                                             $startTime = microtime(true);
                                             if (file_exists('/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/'.$filename.'.dfR')) {
-                                                $this->info('Skipping /home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/'.$filename.'.dfR');
+                                                $this->info('Skipping '.$hdrFormat);
                                                 continue;
                                             } else {
                                                 $content = <<<EOD
@@ -120,15 +120,15 @@ class Autorun extends Command
 
                                             $endTime = microtime(true);
                                             $this->info(round(($endTime - $startTime)/60, 4).' - '.$filename);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+                                        } // $angle
+                                    } // $zRef
+                                } // $yRef
+                            } // $xRef
+                        } // $filtA
+                    } // $width
+                } // $height
+            } // $kV
+        } // $phantParam
     }
 
     /**
