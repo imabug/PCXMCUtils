@@ -79,7 +79,7 @@ class Autorun extends Command
                                              */
                                             $startTime = microtime(true);
                                             if (file_exists('/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/'.$filename.'.dfR')) {
-                                                $this->info('Skipping '.$hdrFormat);
+                                                $this->info('Skipping '.$header);
                                                 continue;
                                             } else {
                                                 $content = <<<EOD
