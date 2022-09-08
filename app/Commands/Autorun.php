@@ -77,34 +77,34 @@ class Autorun extends Command
                                         continue;
                                     } else {
                                         $content = <<<EOD
-                                                            Header text: {$header}
-                                                             Projection: {$angle}
-                                                             Obl. Angle:                        0.0000
-                                                                    Age: {$age}
-                                                                 Length: {$length}
-                                                                   Mass: {$mass}
-                                                        Arms in phantom:                             1
-                                                                    FRD:                       40.0000
-                                                       X-ray beam width: {$width}
-                                                      X-ray beam height: {$height}
-                                                                    FSD:                       37.2000
-                                                     Beam width at skin:                       14.8800
-                                                    Beam height at skin:                        3.0969
-                                                                   Xref:                             0
-                                                                   Yref:                             0
-                                                                   Zref: {$zRef}
-                                                  E-levels (Max.en./10):                            15
-                                                                 NPhots:                         20000
-                                                                     kV: {$kv}
-                                                             AnodeAngle:                             5
-                                                           Filter A (Z):                            13
-                                                          Filter A (mm): {$filtA}
-                                                           Filter B (Z):                            29
-                                                          Filter B (mm):                             0
-                                                    Input dose quantity:                           DAP
-                                                       Input dose value:                           1.0
-                                                       Output file name: {$filename}
-                                        EOD;
+                                                                Header text: {$header}
+                                                                 Projection: {$angle}
+                                                                 Obl. Angle:                        0.0000
+                                                                        Age: {$age}
+                                                                     Length: {$length}
+                                                                       Mass: {$mass}
+                                                            Arms in phantom:                             1
+                                                                        FRD:                       40.0000
+                                                           X-ray beam width: {$width}
+                                                          X-ray beam height: {$height}
+                                                                        FSD:                       37.2000
+                                                         Beam width at skin:                       14.8800
+                                                        Beam height at skin:                        3.0969
+                                                                       Xref:                             0
+                                                                       Yref:                             0
+                                                                       Zref: {$zRef}
+                                                      E-levels (Max.en./10):                            15
+                                                                     NPhots:                         20000
+                                                                         kV: {$kv}
+                                                                 AnodeAngle:                             5
+                                                               Filter A (Z):                            13
+                                                              Filter A (mm): {$filtA}
+                                                               Filter B (Z):                            29
+                                                              Filter B (mm):                             0
+                                                        Input dose quantity:                           DAP
+                                                           Input dose value:                           1.0
+                                                           Output file name: {$filename}
+                                            EOD;
 
                                         $fh = fopen("/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/Autocalc.dfR", 'w+');
                                         fwrite($fh, $content);
