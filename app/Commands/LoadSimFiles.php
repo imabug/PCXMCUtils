@@ -114,14 +114,14 @@ class LoadSimFiles extends Command
      *
      * @return int
      */
-    private function loadDfr($simid, $f): int
+    private function loadDfr($simid, $f, Dfr $dfr): int
     {
         // Load the dfR file
         // Storage::get() returns the file contents as a string.
         // Use explode() to split each line into an array element
         $dfrData = explode("\n", Storage::disk('simulations')->get($f));
 
-        $dfr = new Dfr();
+        // $dfr = new Dfr();
 
         // Parse the dfR data
         $dfr->simulation_id  = $simid;
@@ -167,7 +167,7 @@ class LoadSimFiles extends Command
      * Dose values are in columns 33-47
      * Simulation error is in columns 48-62 (ignored)
      */
-    private function loadMgr($simid, $dfrid, $f): int
+    private function loadMgr($simid, $dfrid, $f, Mgr $mgr): int
     {
         // Load the mGR file
         // Storage::get() returns the file contents as a string.
@@ -177,7 +177,7 @@ class LoadSimFiles extends Command
             18
         );
 
-        $mgr = new Mgr();
+        // $mgr = new Mgr();
 
         // Store the last 5 lines of the first section of the mGR file
         $mgr->simulation_id = $simid;
