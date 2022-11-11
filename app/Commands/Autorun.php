@@ -56,8 +56,8 @@ class Autorun extends Command
             for ($kv = 60; $kv <= 120; $kv += 20) {
                 for ($height = 1; $height <= 16; $height += 2) {
                     for ($width = 1; $width <= 16; $width += 2) {
-                        for ($filtA = 2; $filtA <= 6; $filtA++) {
-                            for ($zRef = $zRange[$age][0]; $zRef <= $zRange[$age][1]; $zRef++) {
+                        for ($filtA = 2; $filtA <= 6; $filtA += 2) {
+                            for ($zRef = $zRange[$age][0]; $zRef <= $zRange[$age][1]; $zRef += 2) {
                                 for ($angle = 0; $angle < 360; $angle++) {
                                     $header = sprintf($hdrFormat, $age, $kv, $xRef, $yRef, $zRef, $filtA, $width, $height, $angle);
                                     $filename = sprintf($fnFormat, $age, $kv, $xRef, $yRef, $zRef, $filtA, $width, $height, $angle);
