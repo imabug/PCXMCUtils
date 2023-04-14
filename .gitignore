@@ -3,3 +3,4 @@
 /.vscode
 /.vagrant
 .phpunit.cache
+.ac-php-conf.json
