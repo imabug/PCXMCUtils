@@ -29,14 +29,14 @@ class Autorun extends Command
     public function handle()
     {
         // Phantom parameter array
-        // Each row is [phantom age, height, mass, zref]
+        // Each row is [phantom age, height, mass]
         $phantParam = [
-#            [0, 50.9, 3.4, 25.5],
-#            [1, 74.4, 9.2, 36],
-#            [5, 109.1, 19, 47],
-            [10, 139, 32.4, 59],
-#            [15, 168.1, 56.3, 75],
-#            [30, 178.6, 73.2, 83],
+            [0, 50.9, 3.4],
+            [1, 74.4, 9.2],
+            [5, 109.1, 19],
+            [10, 139, 32.4],
+            [15, 168.1, 56.3],
+            [30, 178.6, 73.2],
         ];
 
         $zRange[10] = [57, 64];
