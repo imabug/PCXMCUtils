@@ -4,6 +4,9 @@ namespace App\Commands;
 
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
+use App\Dfr;
+use App\Mgr;
+use App\Simulation;
 
 class Autorun extends Command
 {
@@ -90,8 +93,8 @@ class Autorun extends Command
                                                                    $simParams['height'],
                                                                    $simParams['angle']);
                                     $this->runSim($simParams);
-                                    $this->loadDfr($simParams['simid']);
-                                    $this->loadMgr($simParams['simid']);
+                                    $dfrid = $this->loadDfr($simParams['simid'], $simParams['outFile']);
+                                    $this->loadMgr($simParams['simid'], $dfrid, $simParams['outFile']);
                                     $endTime = microtime(true);
                                     $this->info(round(($endTime - $startTime)/60, 4));
                                 } // $angle
@@ -103,7 +106,7 @@ class Autorun extends Command
         } // $phantParam
     }
 
-    public function runSim($simParams): void
+    public function runSim(array $simParams): void
     {
         $content = <<<EOD
                       Header text: {$simParams['header']}
@@ -142,15 +145,118 @@ class Autorun extends Command
         exec("/usr/bin/wine /home/eugenem/.wine/drive_c/Program\ Files\ \(x86\)/PCXMC/PCXMC20Rotation.exe");
     }
 
-    public function loadDfr(): void
+    public function loadDfr(int $simid, int|string $fname): int
     {
+        $dfrFile = "/home/eugenem/.wine/drive_c/Program\ Files\ \(x86\)/PCXMC/MCRUNS/".$fname."dfR";
+        $dfrData = file($dfrFile);
 
+        $dfr = new Dfr();
+
+        $dfr->simulation_id = $simid;
+        $dfr->header         = trim(substr($dfrData[0], 33, 100));
+        $dfr->projection     = trim(substr($dfrData[1], 33, 30));
+        $dfr->oblAngle       = trim(substr($dfrData[2], 33, 30));
+        $dfr->age            = trim(substr($dfrData[3], 33, 30));
+        $dfr->phantLength    = trim(substr($dfrData[4], 33, 30));
+        $dfr->phantMass      = trim(substr($dfrData[5], 33, 30));
+        $dfr->phantArms      = trim(substr($dfrData[6], 33, 30));
+        $dfr->frd            = trim(substr($dfrData[7], 33, 30));
+        $dfr->xrayBeamWidth  = trim(substr($dfrData[8], 33, 30));
+        $dfr->xrayBeamHeight = trim(substr($dfrData[9], 33, 30));
+        $dfr->fsd            = trim(substr($dfrData[10], 33, 30));
+        $dfr->skinBeamWidth  = trim(substr($dfrData[11], 33, 30));
+        $dfr->skinBeamHeight = trim(substr($dfrData[12], 33, 30));
+        $dfr->xRef           = trim(substr($dfrData[13], 33, 30));
+        $dfr->yRef           = trim(substr($dfrData[14], 33, 30));
+        $dfr->zRef           = trim(substr($dfrData[15], 33, 30));
+        $dfr->eLevels        = trim(substr($dfrData[16], 33, 30));
+        $dfr->nPhots         = trim(substr($dfrData[17], 33, 30));
+        $dfr->kv             = trim(substr($dfrData[18], 33, 30));
+        $dfr->anodeAngle     = trim(substr($dfrData[19], 33, 30));
+        $dfr->filterAZ       = trim(substr($dfrData[20], 33, 30));
+        $dfr->filterAThick   = trim(substr($dfrData[21], 33, 30));
+        $dfr->filterBZ       = trim(substr($dfrData[22], 33, 30));
+        $dfr->filterBThick   = trim(substr($dfrData[23], 33, 30));
+        $dfr->inpDoseQty     = trim(substr($dfrData[24], 33, 30));
+        $dfr->inpDoseVal     = trim(substr($dfrData[25], 33, 30));
+        $dfr->OutputFileName = trim(substr($dfrData[26], 33, 100));
+
+        $dfr->save();
+
+        return $dfr->id;
     }
 
-    public function loadMgr(): void
+    public function loadMgr(int $simid, int $dfrid, int|string $fname): void
     {
+        $mgrFile = "/home/eugenem/.wine/drive_c/Program\ Files\ \(x86\)/PCXMC/MCRUNS/".$fname."mGR";
+        $mgrData = array_slice(file($mgrFile, FILE_SKIP_EMPTY_LINES), 18);
 
-    }
+        $mgr = new Mgr();
+        // Store the last 5 lines of the first section of the mGR file
+        $mgr->simulation_id = $simid;
+        $mgr->dfr_id        = $dfrid;
+        $mgr->xyScale       = trim(substr($mgrData[0], 33, 30));
+        $mgr->zScale        = trim(substr($mgrData[1], 33, 30));
+        $mgr->kv            = trim(substr($mgrData[2], 33, 30));
+        $mgr->filter        = trim(substr($mgrData[3], 33, 30));
+        $mgr->refAK         = trim(substr($mgrData[4], 33, 30));
+
+        // Store the dose data from the mGR file. Multiply doses by 1000
+        // to convert from mGy to microGray.
+        $mgr->activeBoneMarrow  = trim(substr($mgrData[7], 33, 15))*1000;
+        $mgr->adrenals          = trim(substr($mgrData[8], 33, 15))*1000;
+        $mgr->brain             = trim(substr($mgrData[9], 33, 15))*1000;
+        $mgr->breasts           = trim(substr($mgrData[10], 33, 15))*1000;
+        $mgr->colon             = trim(substr($mgrData[11], 33, 15))*1000;
+        $mgr->upperLrgIntestine = trim(substr($mgrData[12], 33, 15))*1000;
+        $mgr->lowerLrgIntestine = trim(substr($mgrData[13], 33, 15))*1000;
+        $mgr->extrathorAirways  = trim(substr($mgrData[14], 33, 15))*1000;
+        $mgr->gallbladder       = trim(substr($mgrData[15], 33, 15))*1000;
+        $mgr->heart             = trim(substr($mgrData[16], 33, 15))*1000;
+        $mgr->kidneys           = trim(substr($mgrData[17], 33, 15))*1000;
+        $mgr->liver             = trim(substr($mgrData[18], 33, 15))*1000;
+        $mgr->lungs             = trim(substr($mgrData[19], 33, 15))*1000;
+        $mgr->lymphNodes        = trim(substr($mgrData[20], 33, 15))*1000;
+        $mgr->muscle            = trim(substr($mgrData[21], 33, 15))*1000;
+        $mgr->oesophagus        = trim(substr($mgrData[22], 33, 15))*1000;
+        $mgr->oralMucosa        = trim(substr($mgrData[23], 33, 15))*1000;
+        $mgr->ovaries           = trim(substr($mgrData[24], 33, 15))*1000;
+        $mgr->pancreas          = trim(substr($mgrData[25], 33, 15))*1000;
+        $mgr->prostate          = trim(substr($mgrData[26], 33, 15))*1000;
+        $mgr->salGlands         = trim(substr($mgrData[27], 33, 15))*1000;
+        $mgr->skeleton          = trim(substr($mgrData[28], 33, 15))*1000;
+        $mgr->skull             = trim(substr($mgrData[29], 33, 15))*1000;
+        $mgr->upperSpine        = trim(substr($mgrData[30], 33, 15))*1000;
+        $mgr->midSpine          = trim(substr($mgrData[31], 33, 15))*1000;
+        $mgr->lowerSpine        = trim(substr($mgrData[32], 33, 15))*1000;
+        $mgr->scapulae          = trim(substr($mgrData[33], 33, 15))*1000;
+        $mgr->clavicles         = trim(substr($mgrData[34], 33, 15))*1000;
+        $mgr->ribs              = trim(substr($mgrData[35], 33, 15))*1000;
+        $mgr->upperArmBones     = trim(substr($mgrData[36], 33, 15))*1000;
+        $mgr->midArmBones       = trim(substr($mgrData[37], 33, 15))*1000;
+        $mgr->lowerArmBones     = trim(substr($mgrData[38], 33, 15))*1000;
+        $mgr->pelvis            = trim(substr($mgrData[39], 33, 15))*1000;
+        $mgr->upperLegBones     = trim(substr($mgrData[40], 33, 15))*1000;
+        $mgr->midLegBones       = trim(substr($mgrData[41], 33, 15))*1000;
+        $mgr->lowerLegBones     = trim(substr($mgrData[42], 33, 15))*1000;
+        $mgr->skin              = trim(substr($mgrData[43], 33, 15))*1000;
+        $mgr->smIntenstine      = trim(substr($mgrData[44], 33, 15))*1000;
+        $mgr->spleen            = trim(substr($mgrData[45], 33, 15))*1000;
+        $mgr->stomach           = trim(substr($mgrData[46], 33, 15))*1000;
+        $mgr->testicles         = trim(substr($mgrData[47], 33, 15))*1000;
+        $mgr->thymus            = trim(substr($mgrData[48], 33, 15))*1000;
+        $mgr->thyroid           = trim(substr($mgrData[49], 33, 15))*1000;
+        $mgr->urinaryBladder    = trim(substr($mgrData[50], 33, 15))*1000;
+        $mgr->uterus            = trim(substr($mgrData[51], 33, 15))*1000;
+        $mgr->avgDose           = trim(substr($mgrData[52], 33, 15))*1000;
+        $mgr->effDoseICRP60     = trim(substr($mgrData[53], 33, 15))*1000;
+        $mgr->effDoseICRP103    = trim(substr($mgrData[54], 33, 15))*1000;
+        $mgr->absFraction       = trim(substr($mgrData[55], 33, 15));
+
+        $mgr->save();
+
+        return;
+}
 
     /**
      * Define the command's schedule.
