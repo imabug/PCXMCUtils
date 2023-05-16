@@ -4,3 +4,4 @@
 /.vagrant
 .phpunit.cache
 .ac-php-conf.json
+.env
