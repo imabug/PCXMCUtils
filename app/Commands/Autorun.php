@@ -40,12 +40,12 @@ class Autorun extends Command
         // Phantom parameter array
         // Each row is [phantom age, height, masss]
         $phantParam = [
-            [0, 50.9, 3.4],
-            [1, 74.4, 9.2],
-            [5, 109.1, 19],
+            // [0, 50.9, 3.4],
+            // [1, 74.4, 9.2],
+            // [5, 109.1, 19],
             [10, 139, 32.4],
-            [15, 168.1, 56.3],
-            [30, 178.6, 73.2],
+            // [15, 168.1, 56.3],
+            // [30, 178.6, 73.2],
         ];
 
         // Range of zRef to simulate
@@ -62,7 +62,7 @@ class Autorun extends Command
             'outFile' => $arguments['simid'],
             'xRef' => 0,
             'yRef' => 0,
-            'nPhotons' => 1000,
+            'nPhotons' => 20000,
         ];
 
         foreach ($phantParam as [$age, $length, $mass]) {
@@ -80,7 +80,6 @@ class Autorun extends Command
                             for ($zRef = $zRange[$age][0]; $zRef <= $zRange[$age][1]; $zRef += 2) {
                                 $simParams['zRef'] = $zRef;
                                 for ($angle = 0; $angle < 360; $angle++) {
-                                    $startTime = microtime(true);
                                     $simParams['angle'] = $angle;
                                     $simParams['header'] = sprintf($hdrFormat,
                                                                    $simParams['age'],
@@ -92,9 +91,21 @@ class Autorun extends Command
                                                                    $simParams['width'],
                                                                    $simParams['height'],
                                                                    $simParams['angle']);
+                                    $startTime = microtime(true);
+                                    // Run the simulation
                                     $this->runSim($simParams);
+                                    // Load the simulation data from the dfR file into the database
                                     $dfrid = $this->loadDfr($simParams['simid'], $simParams['outFile']);
+                                    // Load the simulation dosimetry data from the mGR file
+                                    // into the database
                                     $this->loadMgr($simParams['simid'], $dfrid, $simParams['outFile']);
+                                    // PCXMC's Autorun won't overwrite existing simulation result
+                                    // files, so delete them
+                                    // Path to the files are hardcoded.  Should work on making this
+                                    // more programmatic.
+                                    unlink("/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/".$simParams['outFile'].".dfR");
+                                    unlink("/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/".$simParams['outFile'].".enR");
+                                    unlink("/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/".$simParams['outFile'].".mGR");
                                     $endTime = microtime(true);
                                     $this->info(round(($endTime - $startTime)/60, 4));
                                 } // $angle
@@ -108,35 +119,36 @@ class Autorun extends Command
 
     public function runSim(array $simParams): void
     {
-        $content = <<<EOD
-                      Header text: {$simParams['header']}
+        $content =
+<<<EOD
+                     Header text: {$simParams['header']}
                       Projection: {$simParams['angle']}
                       Obl. Angle:                        0.0000
-                      Age: {$simParams['age']}
-                      Length: {$simParams['length']}
-                      Mass: {$simParams['mass']}
-                      Arms in phantom:                             1
-                      FRD:                       40.0000
-                      X-ray beam width: {$simParams['width']}
-                      X-ray beam height: {$simParams['height']}
-                      FSD:                       37.2000
-                      Beam width at skin:                       14.8800
-                      Beam height at skin:                        3.0969
-                      Xref:                             0
-                      Yref:                             0
-                      Zref: {$simParams['zRef']}
-                      E-levels (Max.en./10):                            15
-                      NPhots: {$simParams['nPhotons']}
-                      kV: {$simParams['kv']}
+                             Age: {$simParams['age']}
+                          Length: {$simParams['length']}
+                            Mass: {$simParams['mass']}
+                 Arms in phantom:                             1
+                             FRD:                        40.200
+                X-ray beam width: {$simParams['width']}
+               X-ray beam height: {$simParams['height']}
+                             FSD:                       37.2000
+              Beam width at skin:                       14.5424
+             Beam height at skin:                       48.4810
+                            Xref:                        0.0000
+                            Yref:                        0.0000
+                            Zref: {$simParams['zRef']}
+           E-levels (Max.en./10):                            10
+                          NPhots: {$simParams['nPhotons']}
+         X-ray tube voltage (kV): {$simParams['kv']}
                       AnodeAngle:                             5
-                      Filter A (Z):                            13
-                      Filter A (mm): {$simParams['filtA']}
-                      Filter B (Z):                            29
-                      Filter B (mm):                             0
-                      Input dose quantity:                           DAP
-                      Input dose value:                           1.0
-                      Output file name: {$simParams['outFile']}
-                   EOD;
+                    Filter A (Z):                            13
+                   Filter A (mm): {$simParams['filtA']}
+                    Filter B (Z):                            29
+                   Filter B (mm):                             0
+             Input dose quantity:                           DAP
+                Input dose value:                           1.0
+                Output file name: {$simParams['outFile']}
+EOD;
 
         // Write the simulation parameter file and run PCXMC
         $fh = fopen("/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/Autocalc.dfR", 'w+');
@@ -147,8 +159,7 @@ class Autorun extends Command
 
     public function loadDfr(int $simid, int|string $fname): int
     {
-        $dfrFile = "/home/eugenem/.wine/drive_c/Program\ Files\ \(x86\)/PCXMC/MCRUNS/".$fname."dfR";
-        $dfrData = file($dfrFile);
+        $dfrData = file("/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/".$fname.".dfR");
 
         $dfr = new Dfr();
 
@@ -188,8 +199,7 @@ class Autorun extends Command
 
     public function loadMgr(int $simid, int $dfrid, int|string $fname): void
     {
-        $mgrFile = "/home/eugenem/.wine/drive_c/Program\ Files\ \(x86\)/PCXMC/MCRUNS/".$fname."mGR";
-        $mgrData = array_slice(file($mgrFile, FILE_SKIP_EMPTY_LINES), 18);
+        $mgrData = array_slice(file("/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/".$fname.".mGR", FILE_SKIP_EMPTY_LINES), 18);
 
         $mgr = new Mgr();
         // Store the last 5 lines of the first section of the mGR file
