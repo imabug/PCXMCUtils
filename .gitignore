@@ -5,3 +5,4 @@
 .phpunit.cache
 .ac-php-conf.json
 .env
+chk.json
