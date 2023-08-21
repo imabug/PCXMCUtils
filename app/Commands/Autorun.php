@@ -81,16 +81,18 @@ class Autorun extends Command
                                 $simParams['zRef'] = $zRef;
                                 for ($angle = 0; $angle < 360; $angle++) {
                                     $simParams['angle'] = $angle;
-                                    $simParams['header'] = sprintf($hdrFormat,
-                                                                   $simParams['age'],
-                                                                   $simParams['kv'],
-                                                                   $simParams['xRef'],
-                                                                   $simParams['yRef'],
-                                                                   $simParams['zRef'],
-                                                                   $simParams['filtA'],
-                                                                   $simParams['width'],
-                                                                   $simParams['height'],
-                                                                   $simParams['angle']);
+                                    $simParams['header'] = sprintf(
+                                        $hdrFormat,
+                                        $simParams['age'],
+                                        $simParams['kv'],
+                                        $simParams['xRef'],
+                                        $simParams['yRef'],
+                                        $simParams['zRef'],
+                                        $simParams['filtA'],
+                                        $simParams['width'],
+                                        $simParams['height'],
+                                        $simParams['angle']
+                                    );
                                     $startTime = microtime(true);
                                     // Run the simulation
                                     $this->runSim($simParams);
@@ -107,7 +109,7 @@ class Autorun extends Command
                                     unlink("/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/".$simParams['outFile'].".enR");
                                     unlink("/home/eugenem/.wine/drive_c/Program Files (x86)/PCXMC/MCRUNS/".$simParams['outFile'].".mGR");
                                     $endTime = microtime(true);
-                                    $this->info(round(($endTime - $startTime)/60, 4));
+                                    $this->info(round(($endTime - $startTime) / 60, 4));
                                 } // $angle
                             } // $zRef
                         } // $filtA
@@ -213,60 +215,60 @@ EOD;
 
         // Store the dose data from the mGR file. Multiply doses by 1000
         // to convert from mGy to microGray.
-        $mgr->activeBoneMarrow  = trim(substr($mgrData[7], 33, 15))*1000;
-        $mgr->adrenals          = trim(substr($mgrData[8], 33, 15))*1000;
-        $mgr->brain             = trim(substr($mgrData[9], 33, 15))*1000;
-        $mgr->breasts           = trim(substr($mgrData[10], 33, 15))*1000;
-        $mgr->colon             = trim(substr($mgrData[11], 33, 15))*1000;
-        $mgr->upperLrgIntestine = trim(substr($mgrData[12], 33, 15))*1000;
-        $mgr->lowerLrgIntestine = trim(substr($mgrData[13], 33, 15))*1000;
-        $mgr->extrathorAirways  = trim(substr($mgrData[14], 33, 15))*1000;
-        $mgr->gallbladder       = trim(substr($mgrData[15], 33, 15))*1000;
-        $mgr->heart             = trim(substr($mgrData[16], 33, 15))*1000;
-        $mgr->kidneys           = trim(substr($mgrData[17], 33, 15))*1000;
-        $mgr->liver             = trim(substr($mgrData[18], 33, 15))*1000;
-        $mgr->lungs             = trim(substr($mgrData[19], 33, 15))*1000;
-        $mgr->lymphNodes        = trim(substr($mgrData[20], 33, 15))*1000;
-        $mgr->muscle            = trim(substr($mgrData[21], 33, 15))*1000;
-        $mgr->oesophagus        = trim(substr($mgrData[22], 33, 15))*1000;
-        $mgr->oralMucosa        = trim(substr($mgrData[23], 33, 15))*1000;
-        $mgr->ovaries           = trim(substr($mgrData[24], 33, 15))*1000;
-        $mgr->pancreas          = trim(substr($mgrData[25], 33, 15))*1000;
-        $mgr->prostate          = trim(substr($mgrData[26], 33, 15))*1000;
-        $mgr->salGlands         = trim(substr($mgrData[27], 33, 15))*1000;
-        $mgr->skeleton          = trim(substr($mgrData[28], 33, 15))*1000;
-        $mgr->skull             = trim(substr($mgrData[29], 33, 15))*1000;
-        $mgr->upperSpine        = trim(substr($mgrData[30], 33, 15))*1000;
-        $mgr->midSpine          = trim(substr($mgrData[31], 33, 15))*1000;
-        $mgr->lowerSpine        = trim(substr($mgrData[32], 33, 15))*1000;
-        $mgr->scapulae          = trim(substr($mgrData[33], 33, 15))*1000;
-        $mgr->clavicles         = trim(substr($mgrData[34], 33, 15))*1000;
-        $mgr->ribs              = trim(substr($mgrData[35], 33, 15))*1000;
-        $mgr->upperArmBones     = trim(substr($mgrData[36], 33, 15))*1000;
-        $mgr->midArmBones       = trim(substr($mgrData[37], 33, 15))*1000;
-        $mgr->lowerArmBones     = trim(substr($mgrData[38], 33, 15))*1000;
-        $mgr->pelvis            = trim(substr($mgrData[39], 33, 15))*1000;
-        $mgr->upperLegBones     = trim(substr($mgrData[40], 33, 15))*1000;
-        $mgr->midLegBones       = trim(substr($mgrData[41], 33, 15))*1000;
-        $mgr->lowerLegBones     = trim(substr($mgrData[42], 33, 15))*1000;
-        $mgr->skin              = trim(substr($mgrData[43], 33, 15))*1000;
-        $mgr->smIntenstine      = trim(substr($mgrData[44], 33, 15))*1000;
-        $mgr->spleen            = trim(substr($mgrData[45], 33, 15))*1000;
-        $mgr->stomach           = trim(substr($mgrData[46], 33, 15))*1000;
-        $mgr->testicles         = trim(substr($mgrData[47], 33, 15))*1000;
-        $mgr->thymus            = trim(substr($mgrData[48], 33, 15))*1000;
-        $mgr->thyroid           = trim(substr($mgrData[49], 33, 15))*1000;
-        $mgr->urinaryBladder    = trim(substr($mgrData[50], 33, 15))*1000;
-        $mgr->uterus            = trim(substr($mgrData[51], 33, 15))*1000;
-        $mgr->avgDose           = trim(substr($mgrData[52], 33, 15))*1000;
-        $mgr->effDoseICRP60     = trim(substr($mgrData[53], 33, 15))*1000;
-        $mgr->effDoseICRP103    = trim(substr($mgrData[54], 33, 15))*1000;
+        $mgr->activeBoneMarrow  = trim(substr($mgrData[7], 33, 15)) * 1000;
+        $mgr->adrenals          = trim(substr($mgrData[8], 33, 15)) * 1000;
+        $mgr->brain             = trim(substr($mgrData[9], 33, 15)) * 1000;
+        $mgr->breasts           = trim(substr($mgrData[10], 33, 15)) * 1000;
+        $mgr->colon             = trim(substr($mgrData[11], 33, 15)) * 1000;
+        $mgr->upperLrgIntestine = trim(substr($mgrData[12], 33, 15)) * 1000;
+        $mgr->lowerLrgIntestine = trim(substr($mgrData[13], 33, 15)) * 1000;
+        $mgr->extrathorAirways  = trim(substr($mgrData[14], 33, 15)) * 1000;
+        $mgr->gallbladder       = trim(substr($mgrData[15], 33, 15)) * 1000;
+        $mgr->heart             = trim(substr($mgrData[16], 33, 15)) * 1000;
+        $mgr->kidneys           = trim(substr($mgrData[17], 33, 15)) * 1000;
+        $mgr->liver             = trim(substr($mgrData[18], 33, 15)) * 1000;
+        $mgr->lungs             = trim(substr($mgrData[19], 33, 15)) * 1000;
+        $mgr->lymphNodes        = trim(substr($mgrData[20], 33, 15)) * 1000;
+        $mgr->muscle            = trim(substr($mgrData[21], 33, 15)) * 1000;
+        $mgr->oesophagus        = trim(substr($mgrData[22], 33, 15)) * 1000;
+        $mgr->oralMucosa        = trim(substr($mgrData[23], 33, 15)) * 1000;
+        $mgr->ovaries           = trim(substr($mgrData[24], 33, 15)) * 1000;
+        $mgr->pancreas          = trim(substr($mgrData[25], 33, 15)) * 1000;
+        $mgr->prostate          = trim(substr($mgrData[26], 33, 15)) * 1000;
+        $mgr->salGlands         = trim(substr($mgrData[27], 33, 15)) * 1000;
+        $mgr->skeleton          = trim(substr($mgrData[28], 33, 15)) * 1000;
+        $mgr->skull             = trim(substr($mgrData[29], 33, 15)) * 1000;
+        $mgr->upperSpine        = trim(substr($mgrData[30], 33, 15)) * 1000;
+        $mgr->midSpine          = trim(substr($mgrData[31], 33, 15)) * 1000;
+        $mgr->lowerSpine        = trim(substr($mgrData[32], 33, 15)) * 1000;
+        $mgr->scapulae          = trim(substr($mgrData[33], 33, 15)) * 1000;
+        $mgr->clavicles         = trim(substr($mgrData[34], 33, 15)) * 1000;
+        $mgr->ribs              = trim(substr($mgrData[35], 33, 15)) * 1000;
+        $mgr->upperArmBones     = trim(substr($mgrData[36], 33, 15)) * 1000;
+        $mgr->midArmBones       = trim(substr($mgrData[37], 33, 15)) * 1000;
+        $mgr->lowerArmBones     = trim(substr($mgrData[38], 33, 15)) * 1000;
+        $mgr->pelvis            = trim(substr($mgrData[39], 33, 15)) * 1000;
+        $mgr->upperLegBones     = trim(substr($mgrData[40], 33, 15)) * 1000;
+        $mgr->midLegBones       = trim(substr($mgrData[41], 33, 15)) * 1000;
+        $mgr->lowerLegBones     = trim(substr($mgrData[42], 33, 15)) * 1000;
+        $mgr->skin              = trim(substr($mgrData[43], 33, 15)) * 1000;
+        $mgr->smIntenstine      = trim(substr($mgrData[44], 33, 15)) * 1000;
+        $mgr->spleen            = trim(substr($mgrData[45], 33, 15)) * 1000;
+        $mgr->stomach           = trim(substr($mgrData[46], 33, 15)) * 1000;
+        $mgr->testicles         = trim(substr($mgrData[47], 33, 15)) * 1000;
+        $mgr->thymus            = trim(substr($mgrData[48], 33, 15)) * 1000;
+        $mgr->thyroid           = trim(substr($mgrData[49], 33, 15)) * 1000;
+        $mgr->urinaryBladder    = trim(substr($mgrData[50], 33, 15)) * 1000;
+        $mgr->uterus            = trim(substr($mgrData[51], 33, 15)) * 1000;
+        $mgr->avgDose           = trim(substr($mgrData[52], 33, 15)) * 1000;
+        $mgr->effDoseICRP60     = trim(substr($mgrData[53], 33, 15)) * 1000;
+        $mgr->effDoseICRP103    = trim(substr($mgrData[54], 33, 15)) * 1000;
         $mgr->absFraction       = trim(substr($mgrData[55], 33, 15));
 
         $mgr->save();
 
         return;
-}
+    }
 
     /**
      * Define the command's schedule.
