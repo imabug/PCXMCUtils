@@ -34,7 +34,7 @@
         "fakerphp/faker": "^1.21",
         "laravel/pint": "^1.8",
         "mockery/mockery": "^1.5.1",
-        "pestphp/pest": "^2.2",
+        "pestphp/pest": "^3.0",
         "phpstan/phpstan": "^1.10"
     },
     "autoload": {
