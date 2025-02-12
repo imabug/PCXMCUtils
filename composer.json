@@ -25,7 +25,7 @@
         "illuminate/database": "^11.0",
         "intonate/tinker-zero": "^1.2",
         "laravel-zero/framework": "^11.0",
-        "laravel/prompts": "^0.1.6",
+        "laravel/prompts": "^0.3.5",
         "nunomaduro/laravel-console-menu": "^3.4",
         "nunomaduro/laravel-desktop-notifier": "^2.7",
         "nunomaduro/termwind": "^2.0"
