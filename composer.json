@@ -22,9 +22,9 @@
     "require": {
         "php": "^8.2",
         "doctrine/dbal": "^3.6.0",
-        "illuminate/database": "^11.0",
+        "illuminate/database": "^12.17",
         "intonate/tinker-zero": "^1.2",
-        "laravel-zero/framework": "^11.0",
+        "laravel-zero/framework": "^12.0",
         "laravel/prompts": "^0.3.5",
         "nunomaduro/laravel-console-menu": "^3.4",
         "nunomaduro/laravel-desktop-notifier": "^2.7",
@@ -35,7 +35,7 @@
         "laravel/pint": "^1.8",
         "mockery/mockery": "^1.5.1",
         "pestphp/pest": "^3.0",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^2.1"
     },
     "autoload": {
         "psr-4": {
